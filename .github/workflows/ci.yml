@@ -16,11 +16,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install
+      - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install build
       - name: Unit tests
         run: python -m unittest discover -s tests -v
-      - name: Demo smoke
-        run: python src/binderseal.py --demo
+      - name: Wheel build + install + CLI
+        run: |
+          python -m build
+          pip install dist/binderseal-*.whl
+          binderseal --version
+          binderseal --demo

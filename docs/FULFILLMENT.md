@@ -1,37 +1,27 @@
-# BinderSeal fulfillment
+# BinderSeal fulfillment (v1.0.1)
 
-Same pattern as QuantumGuard Operator Pack. Manual fulfillment. No secrets in git.
+Manual fulfillment. No secrets in git.
 
 ## SKUs
 
 | SKU | Price | Deliver |
 |-----|-------|---------|
-| Operator | $99 | CLI + this repo tag + key setup note + 1-year email support |
-| Command | $249 | + recursive/report guidance + HTML template + reseller note |
-| Agency | $599 | + white-label report + design-partner onboarding call |
+| Operator | $99 | CLI (tagged release) + key setup + 1-year email support |
+| Command | $249 | + recursive/report guidance + reseller note |
+| Agency | $599 | + white-label report + design-partner onboarding |
 
 Contact: danpennic@gmail.com
 
-## Stripe (operator action)
+## Stripe (operator action — still outstanding)
 
-1. Stripe Dashboard → Payment Links → New product per SKU (or one product, three prices).
+1. Stripe Dashboard → Payment Links for $99 / $249 / $599.
 2. Collect buyer email.
-3. Test with 4242… then switch to live.
-4. Put live URLs in README and product page the same hour they work.
-5. Do **not** put `sk_live_` or webhooks that auto-mint access until you are ready.
+3. Test then live. Put live URLs in README and product page the same hour.
+4. Do not put `sk_live_` in git.
 
 ## After payment
 
-1. Email the buyer:
-   - Link to public source: https://github.com/danpennic-sys/binderseal
-   - Tag/commit of the frozen drop (v1.0.0)
-   - Short key setup: `pip install cryptography` then first run creates `~/.binderseal_key.pem`
-   - Verify path: install QuantumGuard free CLI, `qg verify sealed.json`
-2. For Command/Agency: attach or link the HTML report example and any private notes you keep offline.
-3. Log the sale offline (date, email, SKU). Do not store card data.
-
-## What not to do
-
-- Do not put Stripe secrets in this repo.
-- Do not claim PQC or continuous monitoring.
-- Do not auto-grant GitHub access from an untested webhook.
+1. Point buyer at https://github.com/danpennic-sys/binderseal tag `v1.0.1`
+2. `pip install cryptography` then `pip install .` or wheel from release
+3. Verify path: free QuantumGuard CLI `qg verify sealed.json`
+4. Log sale offline.

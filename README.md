@@ -1,27 +1,33 @@
 # BinderSeal
 
-**v1.0.0 — production.** Local-first evidence binder sealer for field operators, auditors, and compliance teams.
+**v1.0.1** — production acceptance build. Local-first evidence binder sealer.
 
-Offline. Deterministic. Pay once. Compatible with QuantumGuard CONTRACT-v1 and the Operator Pages suite.
-
-## Why BinderSeal?
-
-Auditors, GRC teams, and field operators need tamper-evident packages of evidence: reports, checklists, logs, CSVs, photos, contracts, and close-out documents. Folder dumps are easy to dispute.
-
-BinderSeal walks a directory, computes deterministic SHA-256 hashes for every file, builds a sorted manifest, and seals the binder into a client-verifiable QuantumGuard evidence pack.
-
-- No SaaS. No subscription. Runs offline after key setup.
-- Clients and auditors verify with free `qg verify` → PASS / FAIL / INDETERMINATE.
-- Source files stay local; only hashes + metadata enter the sealed pack.
+Offline. Content-addressed deterministic seals. Fail-closed crypto. Pay once.
+Compatible with QuantumGuard CONTRACT-v1.
 
 ## Quick start
 
 ```bash
-pip install -r requirements.txt
-python3 src/binderseal.py --demo
-python3 src/binderseal.py --dir ./audit-packet --binder-id AUDIT-2026-042 --recursive --report --out sealed_binder.json
+pip install cryptography
+pip install .
+binderseal --demo
+binderseal --dir ./audit-packet --binder-id AUDIT-2026-042 --recursive --report --out sealed_binder.json
 qg verify sealed_binder.json
 ```
+
+Or without install:
+
+```bash
+pip install -r requirements.txt
+python -m binderseal --dir ./audit-packet --binder-id AUDIT-042 --out sealed.json
+```
+
+## Claims (v1.0.1)
+
+- **Ed25519 only.** No PQC.
+- **Fail-closed:** without `cryptography`, the tool exits; it does not emit stub signatures.
+- **Determinism:** same paths + sizes + file SHA-256 → same signed `payload_hash`. `sealed_at` is advisory and outside the signed body.
+- Source free (MIT). Commercial SKUs sold separately.
 
 ## Commercial SKUs
 
@@ -31,16 +37,10 @@ qg verify sealed_binder.json
 | Command | $249 | + recursive/report + reseller rights |
 | Agency | $599 | + white-label + design partner onboarding |
 
-Purchase / access: **danpennic@gmail.com**
+Purchase: **danpennic@gmail.com** (Stripe links to be added when live)
 
-Source remains free under MIT. See `docs/FULFILLMENT.md` and `docs/PRODUCTION.md`.
-
-## Claims (frozen)
-
-- Ed25519 only. No post-quantum claims.
-- Offline after key setup. No network inside the sealer.
-- Deterministic hashing of file bytes. CONTRACT-v1 pack shape.
+See `docs/PRODUCTION.md` and `docs/FULFILLMENT.md`.
 
 ## License
 
-MIT — see `LICENSE-MIT`.
+MIT — `LICENSE-MIT`.

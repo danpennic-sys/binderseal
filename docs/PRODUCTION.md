@@ -1,45 +1,51 @@
-# BinderSeal production readiness (v1.0.0)
+# BinderSeal production readiness (v1.0.1)
 
-**Status: FROZEN for commercial use — 2026-11-01**
+**Status: PRODUCTION ACCEPTANCE candidate — 2026-11-01**
 
-## Claims card
+## Claims card (corrected)
 
 | Claim | Status |
 |-------|--------|
 | Ed25519 only | Yes |
 | Offline after key setup | Yes |
-| Deterministic SHA-256 of file bytes | Yes |
+| Fail-closed without cryptography | Yes (v1.0.1) |
+| Content-addressed determinism (paths + size + file SHA-256) | Yes (v1.0.1) |
+| sealed_at outside signed payload | Yes (v1.0.1) |
+| HTML report escaped | Yes (v1.0.1) |
+| Installable console script | Yes (v1.0.1) |
 | CONTRACT-v1 pack shape | Yes |
-| PQC / network trust / wall-clock in verifier | No — never claimed |
+| PQC / network trust | No — never claimed |
 | Source free (MIT) | Yes |
-| Commercial SKUs sold separately | Yes |
 
-## Production checklist
+## Determinism (precise)
 
-- [x] Version pinned `__version__ = "1.0.0"`
-- [x] Unit tests (`tests/test_binderseal.py`)
-- [x] CI on push/PR (Python 3.10 + 3.12)
-- [x] HTML report via `--report`
-- [x] Exclude patterns for `.git`, caches, hidden files
-- [x] Fulfillment runbook (`docs/FULFILLMENT.md`)
-- [x] Marketing positioning (`MARKETING.md`)
-- [ ] Stripe Payment Link live for Operator / Command / Agency (operator action)
-- [ ] Product page live on operatorpages.com (landing update)
-- [ ] Design-partner sealed packet sent
+Same binder_id, notes, operator, and set of files (relative_path, size_bytes, sha256 of file bytes) → **identical** `payload`, `payload_hash`, and `signature`.
 
-## How operators run it in the field
+`sealed_at` is an **advisory outer field** on the pack JSON for humans/logs. It is **not** part of the signed payload.
+
+File mtimes are **not** included in the manifest (v1.0.1).
+
+## Crypto policy
+
+Missing `cryptography` → process exits with error. No zero-byte keys or signatures.
+
+## Checklist
+
+- [x] Fail-closed crypto
+- [x] Content-addressed deterministic payload
+- [x] HTML escape
+- [x] Package layout + console entry point
+- [x] CI: unit tests + wheel install + CLI smoke
+- [ ] CI green recorded on main (after push)
+- [ ] Formal git tag `v1.0.1`
+- [ ] QuantumGuard interop verified on a real sealed pack
+- [ ] Stripe Payment Links live (Operator / Command / Agency)
+
+## Field command
 
 ```bash
-pip install -r requirements.txt
-python3 src/binderseal.py --dir ./evidence --binder-id AUDIT-042 --recursive --report --out sealed.json
+pip install cryptography
+pip install .   # or: pip install dist/binderseal-1.0.1-*.whl
+binderseal --dir ./evidence --binder-id AUDIT-042 --recursive --report --out sealed.json
 qg verify sealed.json
 ```
-
-Key file defaults to `~/.binderseal_key.pem`. Protect it. Do not commit keys.
-
-## Non-goals (v1)
-
-- Built-in payment or license enforcement in the CLI
-- Second verifier implementation
-- Network calls inside the sealer
-- Post-quantum signatures
