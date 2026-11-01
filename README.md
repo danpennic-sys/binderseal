@@ -29,17 +29,17 @@ python -m binderseal --dir ./audit-packet --binder-id AUDIT-042 --out sealed.jso
 - **Determinism:** same paths + sizes + file SHA-256 → same signed `payload_hash`. `sealed_at` is advisory and outside the signed body.
 - Source free (MIT). Commercial SKUs sold separately.
 
-## Commercial SKUs
+## Buy (Stripe)
 
-| SKU | Price | Includes |
+| SKU | Price | Checkout |
 |-----|-------|----------|
-| Operator | $99 | CLI + key setup + 1-year email support |
-| Command | $249 | + recursive/report + reseller rights |
-| Agency | $599 | + white-label + design partner onboarding |
+| Operator | $99 | [Pay $99](https://buy.stripe.com/test_9B68wO3KH58Y0OY0qcew800) |
+| Command | $249 | [Pay $249](https://buy.stripe.com/test_fZu6oGbd9bxm8hqb4Qew801) |
+| Agency | $599 | [Pay $599](https://buy.stripe.com/test_bJeaEWa95cBqbtCdcYew802) |
 
-Purchase: **danpennic@gmail.com** (Stripe links to be added when live)
+**These links are currently TEST mode** (`buy.stripe.com/test_…`). Use card `4242 4242 4242 4242` to exercise checkout. Live links require promoting the same products on the live Stripe account, then swapping these URLs.
 
-See `docs/PRODUCTION.md` and `docs/FULFILLMENT.md`.
+Fulfillment remains manual after payment (see `docs/FULFILLMENT.md`). Support: danpennic@gmail.com
 
 ## License
 
